@@ -4,12 +4,13 @@ See LICENSE for details on how to use this code
 # Libraries
 from functools import lru_cache
 import argparse
-from math import sin,cos,tan,atan,exp,pi,sqrt
-from mpmath import csch,coth
+from math import sin, cos, tan, atan, exp, pi, sqrt
+from mpmath import csch, coth
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.integrate
 import scipy.signal
+
 
 class MechanicalProperties:
     """
@@ -103,15 +104,17 @@ class ParticleGeometry:
         self.sampling_points_circle = sampling_points_circle
         h = ((self.semi_major_axis - self.semi_minor_axis) / \
              (self.semi_major_axis + self.semi_minor_axis))**2
+
+        # computes the perimeter of the elliptic particle using Ramanujan's formula [2]
         self.particle_perimeter = pi * (self.semi_major_axis +  self.semi_minor_axis) * \
-                                       (1 + 3*h / (10 + sqrt(4 - 3 * h))) # computes the perimeter \
-        # of the elliptic particle using Ramanujan's formula [2].
+                                       (1 + 3*h / (10 + sqrt(4 - 3 * h)))
         self.effective_radius = self.particle_perimeter / (2 * pi)
+
+        # amount of points to sample the particle.
         self.sampling_points_ellipse = self.sampling_points_circle * self.particle_perimeter / \
-                                      (2*pi*self.semi_major_axis)  # amount of points to sample \
-        # the particle.
-    
-    @lru_cache(maxsize = 10)                             
+                                      (2*pi*self.semi_major_axis)
+
+    @lru_cache(maxsize=10)                             
     def define_particle_geometry_variables(self, f):
         """
         Defines all the necessary variables to describe the elliptic particle
@@ -120,7 +123,7 @@ class ParticleGeometry:
         Parameters:
             ----------
             f: float
-                wrapping degree
+                wrapping degree (between 0 and 1)
 
         Returns:
             -------
@@ -154,7 +157,7 @@ class ParticleGeometry:
         s_list_region3 = np.linspace(0, l3, n3)
         return beta, beta_left, theta_list_region1, theta_list_region3, s_list_region3, l3, s_list_region1, l1
 
-    @lru_cache(maxsize = 128)                             
+    @lru_cache(maxsize=128)
     def compute_r_coordinate(self, f, theta):
         """
         Computes the value of the coordinate r given the position on the ellipse,
@@ -194,7 +197,7 @@ class ParticleGeometry:
         r_coordinate = compute_x_coordinate(theta) - compute_x_coordinate(beta_left)
         return r_coordinate
 
-    @lru_cache(maxsize = 128)                             
+    @lru_cache(maxsize=128)
     def compute_z_coordinate(self, f, theta):
         """
         Computes the value of the coordinate z given the position on the ellipse,
@@ -234,7 +237,7 @@ class ParticleGeometry:
         z_coordinate = compute_y_coordinate(theta) - compute_y_coordinate(beta_left)
         return z_coordinate
 
-    @lru_cache(maxsize = 10)                             
+    @lru_cache(maxsize=10)
     def get_alpha_angle(self, f):
         """
         Computes the value of the alpha angle (see figure *), for a given wrapping degree f
@@ -254,7 +257,7 @@ class ParticleGeometry:
         alpha = psi_list_region1[0]
         return alpha
 
-    @lru_cache(maxsize = 10)                             
+    @lru_cache(maxsize=10)
     def compute_psi1_psi3_angles(self, f):
         """
         Computes the curvature angles in the particle (see figure *),
@@ -273,7 +276,8 @@ class ParticleGeometry:
                 psi angle in region 3 (see figure *)
 
         """
-        beta, beta_left, theta_list_region1, theta_list_region3, s_list_region3, _, s_list_region1, _ = self.define_particle_geometry_variables(f)
+        beta, beta_left, theta_list_region1, theta_list_region3, s_list_region3, _, s_list_region1, _ \
+            = self.define_particle_geometry_variables(f)
         x_bl = self.semi_major_axis * cos(beta_left)
 
         def compute_psi_from_r_z(theta):
@@ -314,6 +318,7 @@ class ParticleGeometry:
 
                 r_elli = self.compute_r_coordinate(f, theta)
                 z_elli = self.compute_z_coordinate(f, theta)
+
                 # managing possible singularities
                 if r_elli == (-x_bl - self.semi_major_axis):
                     r_elli = r_elli + 0.01 * self.semi_major_axis
@@ -324,22 +329,25 @@ class ParticleGeometry:
                 Returns:
                     Eq of the tangent to the ellipse at theta = beta
                 """
-                if theta > pi: #depending on the side of the particle, the tangent's slope is positive or negative
+                # depending on the side of the particle, the tangent's slope is positive or negative
+                if theta > pi:
                     slope1 = -1
-                dz = -self.semi_minor_axis * (r_elli + x_bl) / (self.semi_major_axis **2) / sqrt(1 - ((r_elli + x_bl)/self.semi_major_axis)**2)
+                dz = -self.semi_minor_axis * (r_elli + x_bl) / (self.semi_major_axis **2) / \
+                    sqrt(1 - ((r_elli + x_bl)/self.semi_major_axis)**2)
                 z_tan = z_elli  + slope1 * dz * (r_tan - r_elli)
                 return z_tan
 
-            r_tan_list = np.linspace(0.5 * r_elli-0.5, 1.5 * r_elli+0.5, 10)
+            r_tan_list = np.linspace(0.5 * r_elli - 0.5, 1.5 * r_elli + 0.5, 10)
             r1 = max(r_tan_list)
             z1 = compute_tangent_to_ellipse_at_rtan_and_theta(r1)
-            delta = atan (abs((z1 - z_elli)/(r1 - r_elli)))
+            delta = atan(abs((z1 - z_elli)/(r1 - r_elli)))
             return delta
 
         delta_list_region1 = [compute_psi_from_r_z(t) for t in theta_list_region1]
         delta_list_region3 = [compute_psi_from_r_z(t) for t in theta_list_region3]
-        psi_list_region1=np.zeros_like(s_list_region1)
-        psi_list_region3=np.zeros_like(s_list_region3)
+        psi_list_region1 = np.zeros_like(s_list_region1)
+        psi_list_region3 = np.zeros_like(s_list_region3)
+
         if f < 0.5:  # psi angle is defined differently depending on the position on the particle
             for i in range(len(s_list_region3)):
                 theta = theta_list_region3[i]
@@ -382,6 +390,7 @@ class ParticleGeometry:
                 elif theta <=beta:
                     psi = 3*pi - delta
                 psi_list_region3[i] = psi
+
             for i in range(len(s_list_region1)):
                 theta = theta_list_region1[i]
                 delta = delta_list_region1[i]
@@ -392,6 +401,7 @@ class ParticleGeometry:
                 elif theta <= 2*pi + beta_left:
                     psi = pi + delta
                 psi_list_region1[i] = psi
+
         return psi_list_region1, psi_list_region3
 
     def get_squared_dpsi_region3(self, f):
@@ -413,10 +423,10 @@ class ParticleGeometry:
         _, _, _, _, s_list_region3, _, _, _ = self.define_particle_geometry_variables(f)
         _, psi_list_region3 = self.compute_psi1_psi3_angles(f)
         ds = s_list_region3[1] - s_list_region3[0]
-        dpsi3_list_region3 = [(psi_list_region3[i+1] - psi_list_region3[i])/ds 
-                               for i in range(0, len(psi_list_region3)-1)]  # computes the
-        # derivative of psi in region 3 using finite differences method. The value of 
+        # computes the derivative of psi in region 3 using finite differences method. The value of
         # ds was set after a convergence study.
+        dpsi3_list_region3 = [(psi_list_region3[i+1] - psi_list_region3[i])/ds 
+                               for i in range(0, len(psi_list_region3)-1)]
         squared_dpsi_list_region3 = [p**2 for p in dpsi3_list_region3]
         return squared_dpsi_list_region3
 
@@ -458,10 +468,10 @@ class MembraneGeometry:
         self.sampling_points_membrane = sampling_points_membrane
         self.l2 = 20 * particle.effective_radius
         S2a = np.linspace(0, (self.l2 / 2), int((0.8*self.sampling_points_membrane) + 1))
-        S2b = np.linspace(1.2 * self.l2/2, self.l2, int((0.2*self.sampling_points_membrane)))
+        S2b = np.linspace(1.2 * self.l2 / 2, self.l2, int((0.2 * self.sampling_points_membrane)))
         self.S2 = np.concatenate((S2a, S2b), axis=None)
 
-    @lru_cache(maxsize = 10)                             
+    @lru_cache(maxsize=10)
     def compute_r2r_r2l_z2r_z2l_from_analytic_expression(self, f, particle, mechanics):
         """
         Computes the r and z coordinates to describe the regions 2r and 2l,
@@ -493,6 +503,7 @@ class MembraneGeometry:
         r2r = np.zeros_like(self.S2)
         z2r = np.zeros_like(self.S2)
         sigma = mechanics.sigma_bar
+
         for i in range(1, len(self.S2)):
             s = self.S2[i]
             r = r2r_0 + s - sqrt(2 / sigma) * (1 - cos(alpha)) / \
@@ -501,6 +512,7 @@ class MembraneGeometry:
                 (1 - (csch(s *sqrt(0.5*sigma))) / (coth(s* sqrt(0.5*sigma)) + cos(0.5*alpha)))
             r2r[i] = r
             z2r[i] = z
+
         r2r[0] = r2r_0
         z2r[0] = z2r_0
         r2l = np.array([r2r[0] - r2r[s] for s in range(len(self.S2))])
@@ -617,11 +629,11 @@ def identify_wrapping_phase(particle, mechanics, membrane):
     Parameters:
         ----------
         particle: class
-            ParticleGeometry class
+            ParticleGeometry object
         mechanics: class
-            MechanicalProperties class
+            MechanicalProperties object
         membrane: class
-            MembraneGeometry class
+            MembraneGeometry object
 
     Returns:
         -------
@@ -652,24 +664,30 @@ def identify_wrapping_phase(particle, mechanics, membrane):
                                                                       mechanics,
                                                                       membrane) for f in f_list])
         min_energy_index_list = scipy.signal.argrelextrema(energy_list, np.less)
-        if energy_list[-1] <  energy_list[-2]:  # check if the minimum is reached for f_list[-1]
+
+        # check if the minimum is reached for f_list[-1]
+        if energy_list[-1] <  energy_list[-2]:
             min_energy_index_list = np.concatenate((min_energy_index_list,
                                                     np.array([-1])), axis=None)
-        if energy_list[0] < energy_list[1]:  # check if the minimum is reached for f_list[0]
+
+        # check if the minimum is reached for f_list[0]
+        if energy_list[0] < energy_list[1]:
             min_energy_index_list = np.concatenate((np.array(f_list[0]),
                                                     min_energy_index_list), axis=None)
+
         min_energy_list = [energy_list[int(k)] for k in min_energy_index_list]
         f_min_energy_list = [f_list[int(k)] for k in min_energy_index_list]
+
         return energy_list, min_energy_list, f_min_energy_list
     
     _, _, f_min_energy_list = get_local_energy_minima()
     f_eq = f_min_energy_list[0]
     wrapping_phase_number = 0
     wrapping_phase = '0'
-    if f_eq < 0.2: # check if wrapping phase is phase 1, according to [1]
+
+    if f_eq < 0.2:  # check if wrapping phase is phase 1, according to [1]
         wrapping_phase_number = 1
         wrapping_phase = 'no wrapping'
-
     else: 
         r2r, _, r2l, _ = membrane.compute_r2r_r2l_z2r_z2l_from_analytic_expression(f_eq,
                                                                                    particle,
@@ -738,10 +756,14 @@ def parse_arguments():
             #TODO complete here
     """
     parser = argparse.ArgumentParser()
-    parser.add_argument('-g', '--gamma_bar', required=False, default=10.0, type=float, help='adimensional lineic adhesion between the membrane and the particle. Default value = 10.')
-    parser.add_argument('-s', '--sigma_bar', required=False, default=2.0, type=float, help='adimensional membrane tension. Default value = 2.')
-    parser.add_argument('-a', '--semi_major_axis', required=False, default=1.0, type=float, help='semi-major axis of the elliptic particle. Default value = 1.')
-    parser.add_argument('-b', '--semi_minor_axis', required=False, default=1.0, type=float, help='semi-minor axis of the elliptic particle. Default value = 1.')
+    parser.add_argument('-g', '--gamma_bar', required=False, default=10.0, type=float,
+        help='adimensional lineic adhesion between the membrane and the particle. Default value = 10.')
+    parser.add_argument('-s', '--sigma_bar', required=False, default=2.0, type=float,
+        help='adimensional membrane tension. Default value = 2.')
+    parser.add_argument('-a', '--semi_major_axis', required=False, default=1.0, type=float,
+        help='semi-major axis of the elliptic particle. Default value = 1.')
+    parser.add_argument('-b', '--semi_minor_axis', required=False, default=1.0, type=float,
+        help='semi-minor axis of the elliptic particle. Default value = 1.')
     args = parser.parse_args()
     return args
 
@@ -749,13 +771,17 @@ def parse_arguments():
 if __name__ == "__main__":
     args = parse_arguments()
     f_list = np.arange(0.03, 0.97, 0.003125)
+
     particle = ParticleGeometry(semi_minor_axis=args.semi_minor_axis,
                                 semi_major_axis=args.semi_major_axis,
                                 sampling_points_circle=300)
+
     mechanics = MechanicalProperties(gamma_bar=args.gamma_bar,
                                      sigma_bar=args.sigma_bar)
+
     membrane = MembraneGeometry(particle,
                                 sampling_points_membrane=100)
+
     plot_energy(particle, mechanics, membrane)
     wrapping_phase_number, wrapping_phase = identify_wrapping_phase(particle, mechanics, membrane)
     print('wrapping phase at equilibrium: ', wrapping_phase)
