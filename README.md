@@ -10,6 +10,9 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to install the req
 
 ```pip3 install -r requirements.txt```
 
+## Figures
+![beta](https://github.com/SarahIaquinta/uptake_of_random_rigid_elliptic_particle/blob/main/fig_beta.png)
+
 ## Tutorial
 For given input values of the semi-major axis, semi-minor axis, adimensional lineic adhesion energy and adimensional membrane tension, this code allows you to:
 - display the variation of the adimensional energy with respect to the wrapping degree
