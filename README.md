@@ -11,7 +11,16 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to install the req
 ```pip3 install -r requirements.txt```
 
 ## Figures
-![beta](https://github.com/SarahIaquinta/uptake_of_random_rigid_elliptic_particle/blob/main/fig_beta.png)
+
+![psi](https://github.com/SarahIaquinta/uptake_of_random_rigid_elliptic_particle/blob/main/fig_psi_article.png)
+Figure 1: Definition of psi angles
+
+![beta](http://github.com/SarahIaquinta/uptake_of_random_rigid_elliptic_particle/blob/main/fig_beta.png)
+Figure 2: Definition of beta angles
+
+![theta](https://github.com/SarahIaquinta/uptake_of_random_rigid_elliptic_particle/blob/main/fig.png)
+Figure 3: Definition of theta angles
+
 
 ## Tutorial
 For given input values of the semi-major axis, semi-minor axis, adimensional lineic adhesion energy and adimensional membrane tension, this code allows you to:
