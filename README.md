@@ -47,7 +47,7 @@ python3 uptake_of_random_rigid_elliptic_particle.py \
     --semi_major_axis 1 \
     --semi_minor_axis 1 \
     --sigma_bar 2 \
-    --gamma_bar 10 \
+    --gamma_bar 10 
 ```
 
 ## Contributing
