@@ -44,10 +44,10 @@ To run the code in terminal, execute the following command to set the input para
 
 ```sh
 python3 uptake_of_random_rigid_elliptic_particle.py \
-    --semi_major_axis 1 
-    --semi_minor_axis 1 
-    --sigma_bar 2
-    --gamma_bar 10
+    --semi_major_axis 1 \
+    --semi_minor_axis 1 \
+    --sigma_bar 2 \
+    --gamma_bar 10 \
 ```
 
 ## Contributing
