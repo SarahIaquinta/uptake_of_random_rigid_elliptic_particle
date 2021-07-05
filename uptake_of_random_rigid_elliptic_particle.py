@@ -175,24 +175,7 @@ class ParticleGeometry:
             r_coordinate: float
                 r coordinate (see figure *)  
         """
-        def compute_x_coordinate(t):
-            """
-            Computes the value of the coordinate x given the position on the ellipse,
-                depicted by the angle theta
-
-            Parameters:
-                ----------
-                t: float
-                    angle in the ellipse
-
-            Returns:
-                -------
-                x_coordinate: float
-                    x coordinate (see figure *)  
-            """
-            x_coordinate = self.semi_major_axis * cos(t)
-            return x_coordinate
-
+        compute_x_coordinate = lambda t : self.semi_major_axis * cos(t)
         _, beta_left, _, _, _, _, _, _ = self.define_particle_geometry_variables(f)
         r_coordinate = compute_x_coordinate(theta) - compute_x_coordinate(beta_left)
         return r_coordinate
@@ -215,24 +198,7 @@ class ParticleGeometry:
             z_coordinate: float
                 z coordinate (see figure *)  
         """
-        def compute_y_coordinate(t):
-            """
-            Computes the value of the coordinate y given the position on the ellipse,
-                depicted by the angle theta
-
-            Parameters:
-                ----------
-                t: float
-                    angle in the ellipse
-
-            Returns:
-                -------
-                y_coordinate: float
-                    y coordinate (see figure *)  
-            """
-            y_coordinate = particle.semi_minor_axis * sin(t)
-            return y_coordinate
-
+        compute_y_coordinate = lambda t : particle.semi_minor_axis * sin(t)
         _, beta_left, _, _, _, _, _, _ = self.define_particle_geometry_variables(f)
         z_coordinate = compute_y_coordinate(theta) - compute_y_coordinate(beta_left)
         return z_coordinate
@@ -296,7 +262,6 @@ class ParticleGeometry:
                     angle between the tangent to the particle and horizontal (see figure *)
 
             """
-
             r_elli = self.compute_r_coordinate(f, theta)
             z_elli = self.compute_z_coordinate(f, theta)
 
@@ -315,10 +280,8 @@ class ParticleGeometry:
                         z coordinate of the tangent at r = r_tan
 
                 """
-
                 r_elli = self.compute_r_coordinate(f, theta)
                 z_elli = self.compute_z_coordinate(f, theta)
-
                 # managing possible singularities
                 if r_elli == (-x_bl - self.semi_major_axis):
                     r_elli = r_elli + 0.01 * self.semi_major_axis
