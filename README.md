@@ -37,12 +37,16 @@ For given input values of the semi-major axis, semi-minor axis, adimensional lin
 
 The values of f_list, sampling_points_membrane and sampling_points_circle are expected to be kept unchanged, as they result from convergence studies. 
 
-To run the code in terminal, execute the following command to set the input parameters:
+To run the code in terminal, execute the command bellow to set the input parameters.
 
 ```sh
 python uptake_of_random_rigid_elliptic_particle.py \
     --r_bar 1 \
     --particle_perimeter 6.28 
+```
+To run it with the default values (r_bar = 1 and particle_perimeter = 2pi), execute only the following command:
+```sh
+python uptake_of_random_rigid_elliptic_particle.py
 ```
 
 Remark: Depending on your python version, you might use a different command than "python", as "py", "py3" or "python3" for instance. 
