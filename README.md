@@ -18,7 +18,7 @@ Figure 1: Definition of the coordinates system
 ![psi1](https://github.com/SarahIaquinta/uptake_of_random_rigid_elliptic_particle/blob/main/fig_psi1.png)
 Figure 2: Definition of psi 1 angle
 
-![psi2](https://github.com/SarahIaquinta/uptake_of_random_rigid_elliptic_particle/blob/main/fig_psi3.png)
+![psi3](https://github.com/SarahIaquinta/uptake_of_random_rigid_elliptic_particle/blob/main/fig_psi3.png)
 Figure 3: Definition of psi 3 angle
 
 ![beta](http://github.com/SarahIaquinta/uptake_of_random_rigid_elliptic_particle/blob/main/fig_beta.png)
@@ -44,6 +44,7 @@ python uptake_of_random_rigid_elliptic_particle.py \
     --r_bar 1 \
     --particle_perimeter 6.28 
 ```
+
 To run it with the default values (r_bar = 1 and particle_perimeter = 2pi), execute only the following command:
 ```sh
 python uptake_of_random_rigid_elliptic_particle.py
