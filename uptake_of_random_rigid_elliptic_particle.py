@@ -487,6 +487,32 @@ class MembraneGeometry:
         return r2r, z2r, r2l, z2l
 
 
+class Wrapping:
+    """
+    A class to represent the wrapping of the particle.
+
+    Attributes:
+        ----------
+        wrapíng_list: list
+            list of wrapping degrees at which the system is evaluated 
+    
+    """
+    def __init__(self, wrapping_list):
+        """
+        Constructs all the necessary attributes for the membrane object.
+
+        Parameters:
+            ----------
+            wrapíng_list: list
+                list of wrapping degrees at which the system is evaluated 
+
+        Returns:
+            -------
+            None                    
+        """
+        self.wrapping_list = wrapping_list
+
+
 def compute_adimensioned_energy_variation(f, particle, mechanics, membrane):
     """
     Computes the adimensional energy variation between a given wrapping degree f
@@ -554,7 +580,7 @@ def compute_adimensioned_energy_variation(f, particle, mechanics, membrane):
     return adimensional_total_energy_variation
 
 
-def plot_energy(particle, mechanics, membrane):
+def plot_energy(particle, mechanics, membrane, wrapping):
     """
     Plots the evolution of the adimensional variation of energy during wrapping
 
@@ -574,9 +600,9 @@ def plot_energy(particle, mechanics, membrane):
     energy_list = np.array([compute_adimensioned_energy_variation(f,
                                                                   particle,
                                                                   mechanics,
-                                                                  membrane) for f in f_list])
+                                                                  membrane) for f in wrapping.wrapping_list])
     plt.figure()
-    plt.plot(f_list,
+    plt.plot(wrapping.wrapping_list,
              energy_list,
              '-k',
              label = '$\overline{r} = $' + str(np.round(particle.r_bar, 2)) + 
@@ -589,7 +615,7 @@ def plot_energy(particle, mechanics, membrane):
     plt.xlim((0, 1))
 
 
-def identify_wrapping_phase(particle, mechanics, membrane):
+def identify_wrapping_phase(particle, mechanics, membrane, wrapping):
     """
     Identifies the wrapping phase following the process introduced in [1]
 
@@ -629,21 +655,21 @@ def identify_wrapping_phase(particle, mechanics, membrane):
         energy_list = np.array([compute_adimensioned_energy_variation(f,
                                                                       particle,
                                                                       mechanics,
-                                                                      membrane) for f in f_list])
+                                                                      membrane) for f in wrapping.wrapping_list])
         min_energy_index_list = scipy.signal.argrelextrema(energy_list, np.less)
 
-        # check if the minimum is reached for f_list[-1]
+        # check if the minimum is reached for wrapping.wrapping_list[-1]
         if energy_list[-1] <  energy_list[-2]:
             min_energy_index_list = np.concatenate((min_energy_index_list,
                                                     np.array([-1])), axis=None)
 
-        # check if the minimum is reached for f_list[0]
+        # check if the minimum is reached for wrapping.wrapping_list[0]
         if energy_list[0] < energy_list[1]:
-            min_energy_index_list = np.concatenate((np.array(f_list[0]),
+            min_energy_index_list = np.concatenate((np.array(wrapping.wrapping_list[0]),
                                                     min_energy_index_list), axis=None)
 
         min_energy_list = [energy_list[int(k)] for k in min_energy_index_list]
-        f_min_energy_list = [f_list[int(k)] for k in min_energy_index_list]
+        f_min_energy_list = [wrapping.wrapping_list[int(k)] for k in min_energy_index_list]
 
         return energy_list, min_energy_list, f_min_energy_list
     
@@ -737,7 +763,6 @@ def parse_arguments():
 
 if __name__ == "__main__":
     args = parse_arguments()
-    f_list = np.arange(0.03, 0.97, 0.003125)
 
     particle = ParticleGeometry(r_bar = args.r_bar,
                                 particle_perimeter = args.particle_perimeter,
@@ -749,7 +774,9 @@ if __name__ == "__main__":
     membrane = MembraneGeometry(particle,
                                 sampling_points_membrane=100)
 
-    plot_energy(particle, mechanics, membrane)
-    wrapping_phase_number, wrapping_phase = identify_wrapping_phase(particle, mechanics, membrane)
+    wrapping = Wrapping(wrapping_list=np.arange(0.03, 0.97, 0.003125))
+
+    plot_energy(particle, mechanics, membrane, wrapping)
+    wrapping_phase_number, wrapping_phase = identify_wrapping_phase(particle, mechanics, membrane, wrapping)
     print('wrapping phase at equilibrium: ', wrapping_phase)
     plt.show()

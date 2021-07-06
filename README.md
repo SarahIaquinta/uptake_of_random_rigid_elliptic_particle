@@ -35,7 +35,7 @@ For given input values of the aspect ratio and perimeter of the particle, adimen
 - display the variation of the adimensional energy with respect to the wrapping degree
 - determine the wrapping phase at equilibrium
 
-The values of f_list, sampling_points_membrane and sampling_points_circle are expected to be kept unchanged, as they result from convergence studies. 
+The values of wrapping_list, sampling_points_membrane and sampling_points_circle are expected to be kept unchanged, as they result from convergence studies. 
 
 To run the code in terminal, execute the command bellow to set the input parameters.
 
