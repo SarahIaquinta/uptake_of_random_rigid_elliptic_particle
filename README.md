@@ -12,22 +12,22 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to install the req
 
 ## Figures
 
-![coordinates](https://github.com/SarahIaquinta/uptake_of_random_rigid_elliptic_particle/blob/main/fig_psi_article.png)
+![coordinates](https://github.com/SarahIaquinta/uptake_of_random_rigid_elliptic_particle/blob/main/figures/coordinates.png)
 Figure 1: Definition of the coordinates system
 
-![psi1](https://github.com/SarahIaquinta/uptake_of_random_rigid_elliptic_particle/blob/main/fig_psi1.png)
+![psi1](https://github.com/SarahIaquinta/uptake_of_random_rigid_elliptic_particle/blob/main/figures/psi1_angles.png)
 Figure 2: Definition of psi 1 angle
 
-![psi3](https://github.com/SarahIaquinta/uptake_of_random_rigid_elliptic_particle/blob/main/fig_psi3.png)
+![psi3](https://github.com/SarahIaquinta/uptake_of_random_rigid_elliptic_particle/blob/main/figures/psi3_angles.png)
 Figure 3: Definition of psi 3 angle
 
-![beta](http://github.com/SarahIaquinta/uptake_of_random_rigid_elliptic_particle/blob/main/fig_beta.png)
+![beta](https://github.com/SarahIaquinta/uptake_of_random_rigid_elliptic_particle/blob/main/figures/beta_angles.png)
 Figure 4: Definition of beta angles
 
-![theta](https://github.com/SarahIaquinta/uptake_of_random_rigid_elliptic_particle/blob/main/fig.png)
+![theta](https://github.com/SarahIaquinta/uptake_of_random_rigid_elliptic_particle/blob/main/figures/theta_angles.png)
 Figure 5: Definition of theta angles
 
-![delta](https://github.com/SarahIaquinta/uptake_of_random_rigid_elliptic_particle/blob/main/fig_delta.png)
+![delta](https://github.com/SarahIaquinta/uptake_of_random_rigid_elliptic_particle/blob/main/figures/delta_angles.png)
 Figure 5: Definition of delta angle
 
 ## Tutorial
