@@ -81,16 +81,19 @@ class ParticleGeometry:
             Returns the values of dpsi3**2
 
     """
-    def __init__(self, semi_minor_axis, semi_major_axis, sampling_points_circle):
+    def __init__(self,
+                 r_bar,
+                 particle_perimeter,
+                 sampling_points_circle):
         """
         Constructs all the necessary attributes for the particle object.
 
         Parameters:
             ----------
-            semi_minor_axis: float
-                semi-minor axis of the elliptic particle
-            semi_major_axis: float
-                semi-major axis of the elliptic particle
+            r_bar: float
+                particle's aspect ratio
+            particle_perimeter: float
+                particle's perimeter
             sampling_points_circle: int
                 number of points to describe a circular particle with radius semi_major axis.
 
@@ -98,16 +101,17 @@ class ParticleGeometry:
             -------
             None                    
         """
-        self.semi_minor_axis = semi_minor_axis
-        self.semi_major_axis = semi_major_axis
-        self.aspect_ratio = self.semi_major_axis / self.semi_minor_axis
         self.sampling_points_circle = sampling_points_circle
-        h = ((self.semi_major_axis - self.semi_minor_axis) / \
-             (self.semi_major_axis + self.semi_minor_axis))**2
+        self.r_bar = r_bar
+        self.particle_perimeter = particle_perimeter
 
-        # computes the perimeter of the elliptic particle using Ramanujan's formula [2]
-        self.particle_perimeter = pi * (self.semi_major_axis +  self.semi_minor_axis) * \
-                                       (1 + 3*h / (10 + sqrt(4 - 3 * h)))
+        # computes the semi-minor and semi-major axes lengths of the elliptic particle
+        # using Ramanujan's formula [2]
+
+        h = ((self.r_bar-1)/(self.r_bar+1))**2 
+        self.semi_minor_axis = self.particle_perimeter / \
+                               (pi*(1 + self.r_bar)*(1+ 3*h/(10 + sqrt(4-3*h)))) 
+        self.semi_major_axis = self.semi_minor_axis * self.r_bar
         self.effective_radius = self.particle_perimeter / (2 * pi)
 
         # amount of points to sample the particle.
@@ -198,7 +202,7 @@ class ParticleGeometry:
             z_coordinate: float
                 z coordinate (see figure *)  
         """
-        compute_y_coordinate = lambda t : particle.semi_minor_axis * sin(t)
+        compute_y_coordinate = lambda t : self.semi_minor_axis * sin(t)
         _, beta_left, _, _, _, _, _, _ = self.define_particle_geometry_variables(f)
         z_coordinate = compute_y_coordinate(theta) - compute_y_coordinate(beta_left)
         return z_coordinate
@@ -575,7 +579,7 @@ def plot_energy(particle, mechanics, membrane):
     plt.plot(f_list,
              energy_list,
              '-k',
-             label = '$\overline{r} = $' + str(np.round(particle.aspect_ratio, 2)) + 
+             label = '$\overline{r} = $' + str(np.round(particle.r_bar, 2)) + 
                      ' ; $\overline{\gamma} = $' + str(mechanics.gamma_bar) + 
                      ' ; $\overline{\sigma} = $' + str(mechanics.sigma_bar))
     plt.xlabel('wrapping degree f [-]')
@@ -723,10 +727,10 @@ def parse_arguments():
         help='adimensional lineic adhesion between the membrane and the particle. Default value = 10.')
     parser.add_argument('-s', '--sigma_bar', required=False, default=2.0, type=float,
         help='adimensional membrane tension. Default value = 2.')
-    parser.add_argument('-a', '--semi_major_axis', required=False, default=1.0, type=float,
-        help='semi-major axis of the elliptic particle. Default value = 1.')
-    parser.add_argument('-b', '--semi_minor_axis', required=False, default=1.0, type=float,
-        help='semi-minor axis of the elliptic particle. Default value = 1.')
+    parser.add_argument('-r', '--r_bar', required=False, default=1.0, type=float,
+        help='particle aspect ratio. Default value = 1.')    
+    parser.add_argument('-p', '--particle_perimeter', required=False, default=2*pi, type=float,
+        help='particle perimeter. Default value = 2pi.')    
     args = parser.parse_args()
     return args
 
@@ -735,8 +739,8 @@ if __name__ == "__main__":
     args = parse_arguments()
     f_list = np.arange(0.03, 0.97, 0.003125)
 
-    particle = ParticleGeometry(semi_minor_axis=args.semi_minor_axis,
-                                semi_major_axis=args.semi_major_axis,
+    particle = ParticleGeometry(r_bar = args.r_bar,
+                                particle_perimeter = args.particle_perimeter,
                                 sampling_points_circle=300)
 
     mechanics = MechanicalProperties(gamma_bar=args.gamma_bar,

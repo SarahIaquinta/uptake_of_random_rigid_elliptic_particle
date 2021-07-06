@@ -35,20 +35,17 @@ For given input values of the semi-major axis, semi-minor axis, adimensional lin
 - display the variation of the adimensional energy with respect to the wrapping degree
 - determine the wrapping phase at equilibrium
 
-To get the same results as the one presented in the paper [1], it is necessary to use the same input parameters, especially while setting the semi-major and semi-minor axes. Indeed, the perimeter of the particle should remain equal to 2*pi.
-
-The values of f_list, sampling_points_membrane and sampling_points_circle should remain unchanged, as they result from convergence studies. 
-
+The values of f_list, sampling_points_membrane and sampling_points_circle are expected to be kept unchanged, as they result from convergence studies. 
 
 To run the code in terminal, execute the following command to set the input parameters:
 
 ```sh
-python3 uptake_of_random_rigid_elliptic_particle.py \
-    --semi_major_axis 1 \
-    --semi_minor_axis 1 \
-    --sigma_bar 2 \
-    --gamma_bar 10 
+python uptake_of_random_rigid_elliptic_particle.py \
+    --r_bar 1 \
+    --particle_perimeter 6.28 
 ```
+
+Remark: Depending on your python version, you might use a different command than "python", as "py", "py3" or "python3" for instance. 
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
