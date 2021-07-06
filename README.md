@@ -31,7 +31,7 @@ Figure 5: Definition of theta angles
 Figure 5: Definition of delta angle
 
 ## Tutorial
-For given input values of the semi-major axis, semi-minor axis, adimensional lineic adhesion energy and adimensional membrane tension, this code allows you to:
+For given input values of the aspect ratio and perimeter of the particle, adimensional lineic adhesion energy and adimensional membrane tension, this code allows you to:
 - display the variation of the adimensional energy with respect to the wrapping degree
 - determine the wrapping phase at equilibrium
 
