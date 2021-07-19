@@ -15,7 +15,7 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to install the req
 ![coordinates](https://github.com/SarahIaquinta/uptake_of_random_rigid_elliptic_particle/blob/main/figures/coordinates.png)
 Figure 1: Definition of the coordinates system
 
-![psi1](https://github.com/SarahIaquinta/uptake_of_random_rigid_elliptic_particle/blob/main/figures/psi1_angles.png)
+![psi1](https://github.com/SarahIaquinta/uptake_of_random_rigid_elliptic_particle/blob/main/figures/psi1_gif.gif)
 Figure 2: Definition of psi 1 angle
 
 ![psi3](https://github.com/SarahIaquinta/uptake_of_random_rigid_elliptic_particle/blob/main/figures/psi3_angles.png)
