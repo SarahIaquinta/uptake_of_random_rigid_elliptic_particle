@@ -18,7 +18,7 @@ Figure 1: Definition of the coordinates system
 ![psi1](https://github.com/SarahIaquinta/uptake_of_random_rigid_elliptic_particle/blob/main/figures/psi1_gif.gif)
 Figure 2: Definition of psi 1 angle
 
-![psi3](https://github.com/SarahIaquinta/uptake_of_random_rigid_elliptic_particle/blob/main/figures/psi3_angles.png)
+![psi3](https://github.com/SarahIaquinta/uptake_of_random_rigid_elliptic_particle/blob/main/figures/psi3_gif.gif)
 Figure 3: Definition of psi 3 angle
 
 ![beta](https://github.com/SarahIaquinta/uptake_of_random_rigid_elliptic_particle/blob/main/figures/beta_angles.png)
