@@ -37,7 +37,7 @@ For given input values of the aspect ratio and perimeter of the particle, adimen
 
 The values of wrapping_list, sampling_points_membrane and sampling_points_circle are expected to be kept unchanged, as they result from convergence studies. 
 
-To run the code in terminal, execute the command bellow to set the input parameters.
+To run the code in terminal, execute the command bellow to set the input parameters. 
 
 ```sh
 python uptake_of_random_rigid_elliptic_particle.py \
@@ -51,6 +51,8 @@ python uptake_of_random_rigid_elliptic_particle.py
 ```
 
 Remark: Depending on your python version, you might use a different command than "python", as "py", "py3" or "python3" for instance. 
+
+It is also possible to run the code from any Python development environment. It will run the code written in the main section.
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
