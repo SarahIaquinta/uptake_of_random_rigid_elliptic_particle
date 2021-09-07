@@ -1,7 +1,7 @@
 # Cellular uptake of random elliptic particles
 
 ## Associated paper
-The present code is the supplemental material associated to the paper ![1](https://github.com/SarahIaquinta/uptake_of_random_rigid_elliptic_particle/blob/main/Cellular_uptake_of_rigid_elliptic_random_nanoparticles.pdf). 
+The present code is the supplemental material associated to the paper [1]. 
 
 ## Dependencies
 In order to make sure that you are able to run the code, please install the required versions of the libraries by executing the command bellow in your terminal.
