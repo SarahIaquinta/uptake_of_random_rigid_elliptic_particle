@@ -67,7 +67,7 @@ A [GPL](https://tldrlegal.com/license/bsd-3-clause-license-(revised)) license is
 [1] @article{
         title={Influence of the mechanical and geometrical parameters on the cellular uptake of nanoparticles: a stochastic approach},
         author={Iaquinta S, Khazaie S, Fréour S, Jacquemin F, Blanquart C, Ishow E},
-        journal={Physical Review Letters},
+        journal={},
         year={2021}
         }
 [2] @article{
